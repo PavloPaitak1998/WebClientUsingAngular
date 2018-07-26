@@ -1,0 +1,24 @@
+<h1>Plane ditails</h1>
+
+<p *ngIf="!plane"><em>Loading...</em></p>
+
+<table class='table table-striped' *ngIf="plane">
+  <thead>
+      <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Plane Type Id</th>
+          <th>Release Date</th>
+          <th>Lifetime</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>{{ plane?.id }}</td>
+          <td>{{ plane?.name }}</td>
+          <td>{{ plane?.planeTypeId }}</td>
+          <td>{{ plane?.releaseDate|date }}</td>
+          <td>{{ plane?.lifetime }}</td>
+      </tr>
+  </tbody>
+</table>

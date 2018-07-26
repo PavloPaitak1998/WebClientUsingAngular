@@ -1,0 +1,53 @@
+<h1>Crew-list</h1>
+
+<p *ngIf="!crews"><em>Loading...</em></p>
+
+<div [hidden]="!crews">
+
+  <div class="create" [hidden]="!tableMode">
+    <input type="button" value="Create Crew" class="btn-create btn btn-default" (click)="onAdd()">
+  </div>
+  
+  <table class='table table-striped' *ngIf="tableMode; else create">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Details</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let c of crews">
+          <ng-template [ngIf]="crew?.id != c.id" [ngIfElse]="edit">
+            <td>{{ c?.id }}</td>  
+            <td><i class="fas fa-info" (click)="onSelect(c)"></i></td>
+            <td>
+                <input type="button" class="btn btn-sm btn-primary" value="Update" (click)="onEditCrew(c)">
+                <input type="button" class="btn btn-sm btn-danger"  value="Delete" (click)="onDelete(c)">
+            </td>
+          </ng-template>
+        </tr>
+    </tbody>
+  </table>
+
+  <!--template for editing-->
+  <ng-template #edit>
+      <td>
+          {{crew.id}}
+      </td>
+      <td><i class="fas fa-info" (click)="onSelect(crew)"></i></td>
+      <td>
+          <input type="button" value="Save" (click)="onSave()" class="btn btn-sm btn-success" />
+          <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-sm btn-danger" />
+      </td>
+  </ng-template>
+    
+  <!--template for creating-->
+  <ng-template #create>
+          <div>
+              <input type="button" value="Create" (click)="onSave()" 
+                  class="btn btn-success" />
+              <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-danger" />
+          </div>
+  </ng-template>
+</div>

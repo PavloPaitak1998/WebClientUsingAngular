@@ -1,0 +1,26 @@
+<h1>Departure ditails</h1>
+
+<p *ngIf="!departure"><em>Loading...</em></p>
+
+<table class='table table-striped' *ngIf="departure">
+  <thead>
+      <tr>
+          <th>Id</th>
+          <th>Flight Number</th>
+          <th>Departure Time</th>
+          <th>Flight Id</th>
+          <th>Crew Id</th>
+          <th>Plane Id</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>{{ departure?.id }}</td>
+          <td>{{ departure?.flightNumber }}</td>
+          <td>{{ departure?.time|date:'medium' }}</td>
+          <td>{{ departure?.flightId }}</td>
+          <td>{{ departure?.crewId }}</td>
+          <td>{{ departure?.planeId }}</td>
+      </tr>
+  </tbody>
+</table>

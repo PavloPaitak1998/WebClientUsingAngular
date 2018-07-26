@@ -1,0 +1,120 @@
+<h1>Plane-list</h1>
+
+<p *ngIf="!planes"><em>Loading...</em></p>
+
+<div [hidden]="!planes">
+
+  <div class="create" [hidden]="!tableMode">
+    <input type="button" value="Create Plane" class="btn-create btn btn-default" (click)="onAdd()">
+  </div>
+  
+<table class='table table-striped' *ngIf="tableMode; else create">
+  <thead>
+      <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Plane Type Id</th>
+          <th>Release Date</th>
+          <th>Lifetime</th>
+          <th>Details</th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let p of planes">
+        <ng-template [ngIf]="plane?.id != p.id" [ngIfElse]="edit">
+          <td>{{ p?.id }}</td>  
+          <td>{{ p?.name }}</td>
+          <td>{{ p?.planeTypeId }}</td>
+          <td>{{ p?.releaseDate|date }}</td>
+          <td>{{ p?.lifetime }}</td>
+          <td><i class="fas fa-info" (click)="onSelect(p)"></i></td>
+          <td>
+              <input type="button" class="btn btn-sm btn-primary" value="Update" (click)="onEditPlane(p)">
+              <input type="button" class="btn btn-sm btn-danger"  value="Delete" (click)="onDelete(p)">
+          </td>
+        </ng-template>
+      </tr>
+  </tbody>
+</table>
+
+<!--template for editing-->
+<ng-template #edit>
+        <td>
+            {{plane.id}}
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="plane.name" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="plane.planeTypeId" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="plane.releaseDate" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="plane.lifetime" class="form-control" />
+        </td>
+        <td>
+            <i class="fas fa-info" (click)="onSelect(plane)"></i>
+        </td>
+        <td>
+            <input type="button" value="Save" (click)="onSave()" class="btn btn-sm btn-success" />
+            <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-sm btn-danger" />
+        </td>
+    </ng-template>
+     
+    <!--template for creating-->
+    <ng-template #create>
+        <form [formGroup]="myForm" novalidate >
+            <div class="form-group">
+                <label>Plane Name</label>
+                <input type="text"  class="form-control" 
+                    name="name" formControlName="planeName"/>
+
+                    <div class="alert alert-danger"
+                        *ngIf="myForm.controls['planeName'].invalid && myForm.controls['planeName'].touched">
+                        Uncorrect plane name !
+                    </div>
+            </div>
+            <div class="form-group">
+                <label>Plane Type Id</label>
+                <input type="text"  class="form-control" 
+                    name="planeTypeId" formControlName="planeTypeId"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['planeTypeId'].invalid && myForm.controls['planeTypeId'].touched">
+                    Uncorrect plane type Id !
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label>Release Date</label>
+                <input id="date" type="date" class="form-control" 
+                    name="releaseDate" formControlName="planeReleaseDate"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['planeReleaseDate'].invalid && myForm.controls['planeReleaseDate'].touched">
+                    Uncorrect plane release date !
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label>Lifetime</label>
+                <input type="text" class="form-control" 
+                    name="lifetime" formControlName="planeLifetime"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['planeLifetime'].invalid && myForm.controls['planeLifetime'].touched">
+                    Uncorrect plane lifetime !
+                </div>
+
+            </div>
+            <div>
+                <input type="button" value="Create" [disabled]="myForm.invalid" (click)="onSave()" 
+                    class="btn btn-success" />
+                <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-danger" />
+            </div>
+        </form>
+    </ng-template>
+</div>

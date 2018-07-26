@@ -1,0 +1,136 @@
+<h1>Pilot-list</h1>
+
+<p *ngIf="!pilots"><em>Loading...</em></p>
+
+<div [hidden]="!pilots">
+
+  <div class="create" [hidden]="!tableMode">
+    <input type="button" value="Create Pilot" class="btn-create btn btn-default" (click)="onAdd()">
+  </div>
+  
+<table class='table table-striped' *ngIf="tableMode; else create">
+  <thead>
+      <tr>
+          <th>Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Crew Id</th>
+          <th>Experience</th>
+          <th>Birth Date</th>
+          <th>Details</th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let p of pilots">
+        <ng-template [ngIf]="pilot?.id != p.id" [ngIfElse]="edit">
+          <td>{{ p?.id }}</td>  
+          <td>{{ p?.firstName }}</td>
+          <td>{{ p?.lastName }}</td>
+          <td>{{ p?.crewId }}</td>
+          <td>{{ p?.experience }}</td>
+          <td>{{ p?.birthDate|date }}</td>
+          <td><i class="fas fa-info" (click)="onSelect(p)"></i></td>
+          <td>
+              <input type="button" class="btn btn-sm btn-primary" value="Update" (click)="onEditPilot(p)">
+              <input type="button" class="btn btn-sm btn-danger"  value="Delete" (click)="onDelete(p)">
+          </td>
+        </ng-template>
+      </tr>
+  </tbody>
+</table>
+
+<!--template for editing-->
+<ng-template #edit>
+        <td>
+            {{pilot.id}}
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="pilot.firstName" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="pilot.lastName" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="pilot.crewId" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="pilot.experience" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="pilot.birthDate" class="form-control" />
+        </td>
+        <td>
+            <i class="fas fa-info" (click)="onSelect(pilot)"></i>
+        </td>
+        <td>
+            <input type="button" value="Save" (click)="onSave()" class="btn btn-sm btn-success" />
+            <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-sm btn-danger" />
+        </td>
+    </ng-template>
+     
+    <!--template for creating-->
+    <ng-template #create>
+        <form [formGroup]="myForm" novalidate >
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text"  class="form-control" 
+                    name="name" formControlName="pilotFirstName"/>
+
+                    <div class="alert alert-danger"
+                        *ngIf="myForm.controls['pilotFirstName'].invalid && myForm.controls['pilotFirstName'].touched">
+                        Uncorrect pilot first name !
+                    </div>
+            </div>
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text"  class="form-control" 
+                    name="lastName" formControlName="pilotLastName"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['pilotLastName'].invalid && myForm.controls['pilotLastName'].touched">
+                    Uncorrect pilot last name !
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label>Crew Id</label>
+                <input type="text" class="form-control" 
+                    name="id" formControlName="crewId"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['crewId'].invalid && myForm.controls['crewId'].touched">
+                    Uncorrect crew Id !
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label>Pilot Experience</label>
+                <input type="text" class="form-control" 
+                    name="experience" formControlName="pilotExperience"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['pilotExperience'].invalid && myForm.controls['pilotExperience'].touched">
+                    Uncorrect pilot experience !
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label>Birth Date</label>
+                <input id="date" type="date" class="form-control" 
+                    name="birthDate" formControlName="pilotBirthDate"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['pilotBirthDate'].invalid && myForm.controls['pilotBirthDate'].touched">
+                    Uncorrect pilot birth date !
+                </div>
+
+            </div>
+            <div>
+                <input type="button" value="Create" [disabled]="myForm.invalid" (click)="onSave()" 
+                    class="btn btn-success" />
+                <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-danger" />
+            </div>
+        </form>
+    </ng-template>
+</div>
