@@ -1,0 +1,136 @@
+<h1>Departure-list</h1>
+
+<p *ngIf="!departures"><em>Loading...</em></p>
+
+<div [hidden]="!departures">
+
+  <div class="create" [hidden]="!tableMode">
+    <input type="button" value="Create Departure" class="btn-create btn btn-default" (click)="onAdd()">
+  </div>
+  
+<table class='table table-striped' *ngIf="tableMode; else create"  matSort (matSortChange)="sortData($event)">
+  <thead>
+      <tr>
+          <th mat-sort-header="id">Id</th>
+          <th mat-sort-header="flightNumber">Flight Number</th>
+          <th mat-sort-header="time">Departure Time</th>
+          <th mat-sort-header="flightId">Flight Id</th>
+          <th mat-sort-header="crewId">Crew Id</th>
+          <th mat-sort-header="planeId">Plane Id</th>
+          <th>Details</th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let d of departures">
+        <ng-template [ngIf]="departure?.id != d.id" [ngIfElse]="edit">
+          <td>{{ d?.id }}</td>  
+          <td>{{ d?.flightNumber }}</td>
+          <td>{{ d?.time|date:'medium' }}</td>
+          <td>{{ d?.flightId }}</td>
+          <td>{{ d?.crewId }}</td>
+          <td>{{ d?.planeId }}</td>
+          <td><i class="fas fa-info" (click)="onSelect(d)"></i></td>
+          <td>
+              <input type="button" class="btn btn-sm btn-primary" value="Update" (click)="onEditDeparture(d)">
+              <input type="button" class="btn btn-sm btn-danger"  value="Delete" (click)="onDelete(d)">
+          </td>
+        </ng-template>
+      </tr>
+  </tbody>
+</table>
+
+<!--template for editing-->
+<ng-template #edit>
+        <td>
+            {{departure.id}}
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="departure.flightNumber" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="departure.time" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="departure.flightId" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="departure.crewId" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="departure.planeId" class="form-control" />
+        </td>
+        <td>
+            <i class="fas fa-info" (click)="onSelect(departure)"></i>
+        </td>
+        <td>
+            <input type="button" value="Save" (click)="onSave()" class="btn btn-sm btn-success" />
+            <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-sm btn-danger" />
+        </td>
+    </ng-template>
+     
+    <!--template for creating-->
+    <ng-template #create>
+        <form [formGroup]="myForm" novalidate >
+            <div class="form-group">
+                <label>Flight number</label>
+                <input type="text"  class="form-control" 
+                    name="number" formControlName="flightNumber"/>
+
+                    <div class="alert alert-danger"
+                        *ngIf="myForm.controls['flightNumber'].invalid && myForm.controls['flightNumber'].touched">
+                        Uncorrect flight number, must be 4 digits (0000) !
+                    </div>
+            </div>
+            <div class="form-group">
+                <label>Departure Time</label>
+                <input id="datetime" type="datetime-local"  class="form-control" 
+                    name="time" formControlName="departureTime"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['departureTime'].invalid && myForm.controls['departureTime'].touched">
+                    Uncorrect departure time !
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label>Flight Id</label>
+                <input type="text" class="form-control" 
+                    name="flightId" formControlName="flightId"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['flightId'].invalid && myForm.controls['flightId'].touched">
+                    Uncorrect flight Id !
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label>Crew Id</label>
+                <input type="text" class="form-control" 
+                    name="crewId" formControlName="crewId"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['crewId'].invalid && myForm.controls['crewId'].touched">
+                    Uncorrect crew Id !
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label>Plane Id</label>
+                <input type="text" class="form-control" 
+                    name="planeId" formControlName="planeId"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['planeId'].invalid && myForm.controls['planeId'].touched">
+                    Uncorrect plane Id !
+                </div>
+
+            </div>
+            <div>
+                <input type="button" value="Create" [disabled]="myForm.invalid" (click)="onSave()" 
+                    class="btn btn-success" />
+                <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-danger" />
+            </div>
+        </form>
+    </ng-template>
+</div>

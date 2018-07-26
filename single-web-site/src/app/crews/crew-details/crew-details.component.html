@@ -1,0 +1,16 @@
+<h1>Crew ditails</h1>
+
+<p *ngIf="!crew"><em>Loading...</em></p>
+
+<table class='table table-striped' *ngIf="crew">
+  <thead>
+      <tr>
+          <th>Id</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>{{ crew?.id }}</td>
+      </tr>
+  </tbody>
+</table>

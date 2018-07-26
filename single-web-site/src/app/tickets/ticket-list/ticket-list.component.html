@@ -1,0 +1,104 @@
+<h1>Ticket-list</h1>
+
+<p *ngIf="!tickets"><em>Loading...</em></p>
+
+<div [hidden]="!tickets">
+
+  <div class="create" [hidden]="!tableMode">
+    <input type="button" value="Create Ticket" class="btn-create btn btn-default" (click)="onAdd()">
+  </div>
+  
+<table class='table table-striped' *ngIf="tableMode; else create" matSort (matSortChange)="sortData($event)">
+  <thead>
+      <tr>
+          <th mat-sort-header="id">Id</th>
+          <th mat-sort-header="price">Price</th>
+          <th mat-sort-header="flightNumber">Flight number</th>
+          <th mat-sort-header="flightId">Flight Id </th>
+          <th>Details</th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let t of tickets">
+        <ng-template [ngIf]="ticket?.id != t.id" [ngIfElse]="edit">
+          <td>{{ t?.id }}</td>  
+          <td>{{ t?.price|currency }}</td>
+          <td>{{ t?.flightNumber }}</td>
+          <td>{{ t?.flightId }}</td>
+          <td><i class="fas fa-info" (click)="onSelect(t)"></i></td>
+          <td>
+              <input type="button" class="btn btn-sm btn-primary" value="Update" (click)="onEditTicket(t)">
+              <input type="button" class="btn btn-sm btn-danger"  value="Delete" (click)="onDelete(t)">
+          </td>
+        </ng-template>
+      </tr>
+  </tbody>
+</table>
+
+<!--template for editing-->
+<ng-template #edit>
+        <td>
+            {{ticket.id}}
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="ticket.price" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="ticket.flightNumber" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="ticket.flightId" class="form-control" />
+        </td>
+        <td>
+            <i class="fas fa-info" (click)="onSelect(ticket)"></i>
+        </td>
+        <td>
+            <input type="button" value="Save" (click)="onSave()" class="btn btn-sm btn-success" />
+            <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-sm btn-danger" />
+        </td>
+    </ng-template>
+     
+    <!--template for creating-->
+    <ng-template #create>
+        <form [formGroup]="myForm" novalidate >
+            <div class="form-group">
+                <label>Flight number</label>
+                <input type="text"  class="form-control" 
+                    name="number" formControlName="flightNumber"/>
+
+                    <div class="alert alert-danger"
+                        *ngIf="myForm.controls['flightNumber'].invalid && myForm.controls['flightNumber'].touched">
+                        Uncorrect flight number, must be 4 digits (0000) !
+                    </div>
+            </div>
+            <div class="form-group">
+                <label>Flight Id</label>
+                <input type="text"  class="form-control" 
+                    name="id" formControlName="flightId"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['flightId'].invalid && myForm.controls['flightId'].touched">
+                    Uncorrect flight Id !
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label>Price</label>
+                <input  type="text" class="form-control" 
+                    name="price" formControlName="ticketPrice"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['ticketPrice'].invalid && myForm.controls['ticketPrice'].touched">
+                    Uncorrect ticket price !
+                </div>
+
+            </div>
+            <div>
+                <input type="button" value="Create" [disabled]="myForm.invalid" (click)="onSave()" 
+                    class="btn btn-success" />
+                <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-danger" />
+            </div>
+        </form>
+    </ng-template>
+</div>

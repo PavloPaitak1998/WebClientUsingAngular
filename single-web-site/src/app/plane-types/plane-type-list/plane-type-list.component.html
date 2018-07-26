@@ -1,0 +1,104 @@
+<h1>PlaneType-list</h1>
+
+<p *ngIf="!planeTypes"><em>Loading...</em></p>
+
+<div [hidden]="!planeTypes">
+
+  <div class="create" [hidden]="!tableMode">
+    <input type="button" value="Create PlaneType" class="btn-create btn btn-default" (click)="onAdd()">
+  </div>
+  
+<table class='table table-striped' *ngIf="tableMode; else create" matSort (matSortChange)="sortData($event)">
+  <thead>
+      <tr>
+          <th mat-sort-header="id">Id</th>
+          <th mat-sort-header="model">Model</th>
+          <th mat-sort-header="seats">Seats</th>
+          <th mat-sort-header="carrying">Carrying</th>
+          <th>Details</th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let pt of planeTypes">
+        <ng-template [ngIf]="planeType?.id != pt.id" [ngIfElse]="edit">
+          <td>{{ pt?.id }}</td>  
+          <td>{{ pt?.model }}</td>
+          <td>{{ pt?.seats }}</td>
+          <td>{{ pt?.carrying }}</td>
+          <td><i class="fas fa-info" (click)="onSelect(pt)"></i></td>
+          <td>
+              <input type="button" class="btn btn-sm btn-primary" value="Update" (click)="onEditPlaneType(pt)">
+              <input type="button" class="btn btn-sm btn-danger"  value="Delete" (click)="onDelete(pt)">
+          </td>
+        </ng-template>
+      </tr>
+  </tbody>
+</table>
+
+<!--template for editing-->
+<ng-template #edit>
+        <td>
+            {{planeType.id}}
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="planeType.model" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="planeType.seats" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="planeType.carrying" class="form-control" />
+        </td>
+        <td>
+            <i class="fas fa-info" (click)="onSelect(planeType)"></i>
+        </td>
+        <td>
+            <input type="button" value="Save" (click)="onSave()" class="btn btn-sm btn-success" />
+            <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-sm btn-danger" />
+        </td>
+    </ng-template>
+     
+    <!--template for creating-->
+    <ng-template #create>
+        <form [formGroup]="myForm" novalidate >
+            <div class="form-group">
+                <label>Plane Model</label>
+                <input type="text"  class="form-control" 
+                    name="model" formControlName="planeTypeModel"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['planeTypeModel'].invalid && myForm.controls['planeTypeModel'].touched">
+                    Uncorrect Model !
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Seats</label>
+                <input type="text"  class="form-control" 
+                    name="seats" formControlName="planeTypeSeats"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['planeTypeSeats'].invalid && myForm.controls['planeTypeSeats'].touched">
+                    Uncorrect Seats !
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label>Carrying </label>
+                <input type="text" class="form-control" 
+                    name="carrying" formControlName="planeTypeCarrying"/>
+
+                <div class="alert alert-danger"
+                    *ngIf="myForm.controls['planeTypeCarrying'].invalid && myForm.controls['planeTypeCarrying'].touched">
+                    Uncorrect Carrying!
+                </div>
+
+            </div>
+            <div>
+                <input type="button" value="Create" [disabled]="myForm.invalid" (click)="onSave()" 
+                    class="btn btn-success" />
+                <input type="button" value="Cancel" (click)="onCancel()" class="btn btn-danger" />
+            </div>
+        </form>
+    </ng-template>
+</div>

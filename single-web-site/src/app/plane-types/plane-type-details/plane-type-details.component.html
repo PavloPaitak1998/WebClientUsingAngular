@@ -1,0 +1,22 @@
+<h1>PlaneType ditails</h1>
+
+<p *ngIf="!planeType"><em>Loading...</em></p>
+
+<table class='table table-striped' *ngIf="planeType">
+  <thead>
+      <tr>
+          <th>Id</th>
+          <th>Model</th>
+          <th>Seats</th>
+          <th>Carrying</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>{{planeType?.id }}</td>
+          <td>{{planeType?.model }}</td>
+          <td>{{planeType?.seats }}</td>
+          <td>{{planeType?.carrying }}</td>
+      </tr>
+  </tbody>
+</table>

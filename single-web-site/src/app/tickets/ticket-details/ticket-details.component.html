@@ -1,0 +1,22 @@
+<h1>Ticket ditails</h1>
+
+<p *ngIf="!ticket"><em>Loading...</em></p>
+
+<table class='table table-striped' *ngIf="ticket">
+  <thead>
+      <tr>
+          <th>Id</th>
+          <th>Flight Number</th>
+          <th>Flight Id</th>
+          <th>Price</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>{{ ticket?.id }}</td>
+          <td>{{ ticket?.flightNumber }}</td>
+          <td>{{ ticket?.flightId }}</td>
+          <td>{{ ticket?.price|currency}}</td>
+      </tr>
+  </tbody>
+</table>

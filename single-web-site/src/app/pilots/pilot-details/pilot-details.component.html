@@ -1,0 +1,26 @@
+<h1>Pilot ditails</h1>
+
+<p *ngIf="!pilot"><em>Loading...</em></p>
+
+<table class='table table-striped' *ngIf="pilot">
+  <thead>
+      <tr>
+          <th>Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Crew Id</th>
+          <th>Experience</th>
+          <th>Birth Date</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>{{ pilot?.id }}</td>
+          <td>{{ pilot?.firstName }}</td>
+          <td>{{ pilot?.lastName }}</td>
+          <td>{{ pilot?.crewId }}</td>
+          <td>{{ pilot?.experience }}</td>
+          <td>{{ pilot?.birthDate|date}}</td>
+      </tr>
+  </tbody>
+</table>
