@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'
 import { ReactiveFormsModule } from '@angular/forms';
+import {MatSortModule} from '@angular/material/sort';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DeparturesRoutingModule } from './departures-routing.module';
 import { DepartureListComponent } from './departure-list/departure-list.component';
@@ -13,7 +15,10 @@ import { DepartureService } from '../Shared/Services/departure.service';
     CommonModule,
     DeparturesRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSortModule,
+    BrowserAnimationsModule
+
   ],
   providers:[DepartureService],
   declarations: [DepartureListComponent, DepartureDetailsComponent]

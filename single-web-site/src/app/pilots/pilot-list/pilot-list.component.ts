@@ -3,6 +3,8 @@ import { FormGroup, Validators, FormBuilder, FormControl} from '@angular/forms';
 import { PilotService } from '../../Shared/Services/pilot.service';
 import { Pilot } from '../../Shared/Models/pilot';
 import { Router } from '@angular/router';
+import {Sort} from '@angular/material';
+import { compare } from '../../Shared/Compare/compare';
 
 @Component({
   selector: 'app-pilot-list',
@@ -28,7 +30,10 @@ export class PilotListComponent implements OnInit {
         "pilotBirthDate":["",[Validators.required]],
         "pilotExperience":["",[Validators.required]]
       });
-    }
+  }
+
+  
+
 
   ngOnInit() {
     this.loadPilots();
@@ -37,6 +42,27 @@ export class PilotListComponent implements OnInit {
   loadPilots(){
     this.pilotService.getAll()
     .subscribe((data:Pilot[])=>this.pilots=data);
+  }
+  
+  sortData(sort: Sort) {
+    const data = this.pilots.slice();
+    if (!sort.active || sort.direction === '') {
+      this.pilots = data;
+      return;
+    }
+
+    this.pilots = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'id': return compare(a.id, b.id, isAsc);
+        case 'firstName': return compare(a.firstName, b.firstName, isAsc);
+        case 'lastName': return compare(a.lastName, b.lastName, isAsc);
+        case 'crewId': return compare(a.crewId, b.crewId, isAsc);
+        case 'experience': return compare(a.experience, b.experience, isAsc);
+        case 'birthDate': return compare(a.birthDate, b.birthDate, isAsc);
+        default: return 0;
+      }
+    });
   }
 
   onSave() {
@@ -81,3 +107,4 @@ export class PilotListComponent implements OnInit {
     this.router.navigate(["pilots/",selected.id]);
   }
 }
+

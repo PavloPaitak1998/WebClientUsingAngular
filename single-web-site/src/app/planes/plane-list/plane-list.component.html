@@ -8,14 +8,14 @@
     <input type="button" value="Create Plane" class="btn-create btn btn-default" (click)="onAdd()">
   </div>
   
-<table class='table table-striped' *ngIf="tableMode; else create">
+<table class='table table-striped' *ngIf="tableMode; else create" matSort (matSortChange)="sortData($event)">
   <thead>
       <tr>
-          <th>Id</th>
-          <th>Name</th>
-          <th>Plane Type Id</th>
-          <th>Release Date</th>
-          <th>Lifetime</th>
+          <th mat-sort-header="id">Id</th>
+          <th mat-sort-header="name">Name</th>
+          <th mat-sort-header="planeTypeId">Plane Type Id</th>
+          <th mat-sort-header="releaseDate">Release Date</th>
+          <th mat-sort-header="lifetime">Lifetime</th>
           <th>Details</th>
           <th></th>
       </tr>

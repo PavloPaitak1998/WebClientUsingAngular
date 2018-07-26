@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'
 import { ReactiveFormsModule } from '@angular/forms';
+import {MatSortModule} from '@angular/material/sort';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PlaneTypesRoutingModule } from './plane-types-routing.module';
 import { PlaneTypeListComponent } from './plane-type-list/plane-type-list.component';
@@ -13,7 +15,9 @@ import { PlaneTypeService } from '../Shared/Services/plane-type.service';
     CommonModule,
     PlaneTypesRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSortModule,
+    BrowserAnimationsModule
   ],
   providers:[PlaneTypeService],
   declarations: [PlaneTypeListComponent, PlaneTypeDetailsComponent]

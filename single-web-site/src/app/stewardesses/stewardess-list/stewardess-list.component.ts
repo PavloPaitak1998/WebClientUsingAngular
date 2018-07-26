@@ -3,6 +3,8 @@ import { FormGroup, Validators, FormBuilder, FormControl} from '@angular/forms';
 import { StewardessService } from '../../Shared/Services/stewardess.service';
 import { Stewardess } from '../../Shared/Models/stewardess';
 import { Router } from '@angular/router';
+import {Sort} from '@angular/material';
+import { compare } from '../../Shared/Compare/compare';
 
 @Component({
   selector: 'app-stewardess-list',
@@ -36,6 +38,26 @@ export class StewardessListComponent implements OnInit {
   loadStewardesses(){
     this.stewardessService.getAll()
     .subscribe((data:Stewardess[])=>this.stewardesses=data);
+  }
+
+  sortData(sort: Sort) {
+    const data = this.stewardesses.slice();
+    if (!sort.active || sort.direction === '') {
+      this.stewardesses = data;
+      return;
+    }
+
+    this.stewardesses = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'id': return compare(a.id, b.id, isAsc);
+        case 'firstName': return compare(a.firstName, b.firstName, isAsc);
+        case 'lastName': return compare(a.lastName, b.lastName, isAsc);
+        case 'crewId': return compare(a.crewId, b.crewId, isAsc);
+        case 'birthDate': return compare(a.birthDate, b.birthDate, isAsc);
+        default: return 0;
+      }
+    });
   }
 
   onSave() {

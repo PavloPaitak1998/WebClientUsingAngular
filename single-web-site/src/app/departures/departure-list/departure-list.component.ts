@@ -3,6 +3,8 @@ import { FormGroup, Validators, FormBuilder, FormControl} from '@angular/forms';
 import { DepartureService } from '../../Shared/Services/departure.service';
 import { Departure } from '../../Shared/Models/departure';
 import { Router } from '@angular/router';
+import {Sort} from '@angular/material';
+import { compare } from '../../Shared/Compare/compare';
 
 @Component({
   selector: 'app-departure-list',
@@ -38,6 +40,28 @@ export class DepartureListComponent implements OnInit {
     this.departureService.getAll()
     .subscribe((data:Departure[])=>this.departures=data);
   }
+
+  sortData(sort: Sort) {
+    const data = this.departures.slice();
+    if (!sort.active || sort.direction === '') {
+      this.departures = data;
+      return;
+    }
+
+    this.departures = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'id': return compare(a.id, b.id, isAsc);
+        case 'flightNumber': return compare(a.flightNumber, b.flightNumber, isAsc);
+        case 'time': return compare(a.time, b.time, isAsc);
+        case 'flightId': return compare(a.flightId, b.flightId, isAsc);
+        case 'crewId': return compare(a.crewId, b.crewId, isAsc);
+        case 'planeId': return compare(a.planeId, b.planeId, isAsc);
+        default: return 0;
+      }
+    });
+  }
+
 
   onSave() {
     if (this.departure.id == undefined) {

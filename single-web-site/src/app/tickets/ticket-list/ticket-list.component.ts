@@ -3,6 +3,8 @@ import { FormGroup, Validators, FormBuilder, FormControl} from '@angular/forms';
 import { TicketService } from '../../Shared/Services/ticket.service';
 import { Router } from '@angular/router';
 import { Ticket } from '../../Shared/Models/ticket';
+import {Sort} from '@angular/material';
+import { compare } from '../../Shared/Compare/compare';
 
 @Component({
   selector: 'app-ticket-list',
@@ -35,6 +37,25 @@ export class TicketListComponent implements OnInit {
   loadTickets(){
     this.ticketService.getAll()
     .subscribe((data:Ticket[])=>this.tickets=data);
+  }
+
+  sortData(sort: Sort) {
+    const data = this.tickets.slice();
+    if (!sort.active || sort.direction === '') {
+      this.tickets = data;
+      return;
+    }
+
+    this.tickets = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'id': return compare(a.id, b.id, isAsc);
+        case 'flightNumber': return compare(a.flightNumber, b.flightNumber, isAsc);
+        case 'price': return compare(a.price, b.price, isAsc);
+        case 'flightId': return compare(a.flightId, b.flightId, isAsc);
+        default: return 0;
+      }
+    });
   }
 
   onSave() {

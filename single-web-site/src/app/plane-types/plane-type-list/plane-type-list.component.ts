@@ -3,6 +3,8 @@ import { FormGroup, Validators, FormBuilder, FormControl} from '@angular/forms';
 import { PlaneTypeService } from '../../Shared/Services/plane-type.service';
 import { PlaneType } from '../../Shared/Models/planeType';
 import { Router } from '@angular/router';
+import {Sort} from '@angular/material';
+import { compare } from '../../Shared/Compare/compare';
 
 @Component({
   selector: 'app-plane-type-list',
@@ -35,6 +37,25 @@ export class PlaneTypeListComponent implements OnInit {
   loadPlaneTypes(){
     this.planeTypeService.getAll()
     .subscribe((data:PlaneType[])=>this.planeTypes=data);
+  }
+  
+  sortData(sort: Sort) {
+    const data = this.planeTypes.slice();
+    if (!sort.active || sort.direction === '') {
+      this.planeTypes = data;
+      return;
+    }
+
+    this.planeTypes = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'id': return compare(a.id, b.id, isAsc);
+        case 'model': return compare(a.model, b.model, isAsc);
+        case 'seats': return compare(a.seats, b.seats, isAsc);
+        case 'carrying': return compare(a.carrying, b.carrying, isAsc);
+        default: return 0;
+      }
+    });
   }
 
   onSave() {

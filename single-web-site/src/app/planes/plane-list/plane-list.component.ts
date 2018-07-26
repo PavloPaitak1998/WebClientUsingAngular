@@ -3,6 +3,8 @@ import { FormGroup, Validators, FormBuilder, FormControl} from '@angular/forms';
 import { PlaneService } from '../../Shared/Services/plane.service';
 import { Plane } from '../../Shared/Models/plane';
 import { Router } from '@angular/router';
+import {Sort} from '@angular/material';
+import { compare } from '../../Shared/Compare/compare';
 
 @Component({
   selector: 'app-plane-list',
@@ -36,6 +38,26 @@ export class PlaneListComponent implements OnInit {
   loadPlanes(){
     this.planeService.getAll()
     .subscribe((data:Plane[])=>this.planes=data);
+  }
+  
+  sortData(sort: Sort) {
+    const data = this.planes.slice();
+    if (!sort.active || sort.direction === '') {
+      this.planes = data;
+      return;
+    }
+
+    this.planes = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'id': return compare(a.id, b.id, isAsc);
+        case 'name': return compare(a.name, b.name, isAsc);
+        case 'planeTypeId': return compare(a.planeTypeId, b.planeTypeId, isAsc);
+        case 'releaseDate': return compare(a.releaseDate, b.releaseDate, isAsc);
+        case 'lifetime': return compare(a.lifetime, b.lifetime, isAsc);
+        default: return 0;
+      }
+    });
   }
 
   onSave() {
