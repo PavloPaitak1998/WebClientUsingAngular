@@ -28,7 +28,7 @@ namespace WebAppAirlineDispatcher
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DispatcherContext>(options => options.UseSqlServer("data source=.\\SQLEXPRESS;initial catalog=DispatcherDB;integrated security=True;MultipleActiveResultSets=True;"));
-            services.AddMvc();/*.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FlightDTOValidator>());*/
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FlightDTOValidator>());
             services.AddTransient<IFlightService, FlightService>();
             services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<IStewardessService, StewardessService>();
